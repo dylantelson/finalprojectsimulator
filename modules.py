@@ -5,12 +5,12 @@ from pygame.locals import *
 class MainCharacter(pygame.sprite.Sprite):
 	def __init__(self, pos):
 
-		self.gravity = 0.5
+		self.gravity = 0.9
 		self.gravitymultiplier = 1
 		self.speed = 6
 		self.maxspeed = 12
 		self.yspeed = 1
-		self.maxyspeed = 4
+		self.maxyspeed = 6
 		self.x = pos[0]
 		self.y = pos[1]
 		self.dead = False
@@ -18,7 +18,7 @@ class MainCharacter(pygame.sprite.Sprite):
 		self.currentanim = 0
 		self.rect = self.image.get_rect()
 		self.rect.topleft = pos
-		self.jumpforce = -9
+		self.jumpforce = -11
 		self.animcooldown = 1.5
 		self.onGround = False
 		self.runanims = [pygame.image.load('sprites/player/run/run1.gif').convert_alpha(), pygame.image.load('sprites/player/run/run2.gif').convert_alpha(), pygame.image.load('sprites/player/run/run3.gif').convert_alpha(), pygame.image.load('sprites/player/run/run4.gif').convert_alpha(), pygame.image.load('sprites/player/run/run5.gif').convert_alpha(), pygame.image.load('sprites/player/run/run6.gif').convert_alpha(), pygame.image.load('sprites/player/run/run7.gif').convert_alpha(), pygame.image.load('sprites/player/run/run8.gif').convert_alpha()]
@@ -62,12 +62,12 @@ class MainCharacter(pygame.sprite.Sprite):
 			self.rect.topleft = (self.x, self.y)
 
 	def reset(self, pos):
-		self.gravity = 0.5
+		self.gravity = 0.9
 		self.gravitymultiplier = 1
 		self.speed = 6
 		self.maxspeed = 12
 		self.yspeed = 1
-		self.maxyspeed = 4
+		self.maxyspeed = 6
 		self.x = pos[0]
 		self.y = pos[1]
 		self.dead = False
@@ -75,8 +75,9 @@ class MainCharacter(pygame.sprite.Sprite):
 
 	
 class Floor(pygame.sprite.Sprite):
-	def __init__(self, pos):
-		self.image = pygame.Surface((150,500))
+	def __init__(self, pos, width):
+		self.width = width
+		self.image = pygame.Surface((self.width,500))
 		self.image.fill((50,50,50))
 		self.x = pos[0]
 		self.y = pos[1]
@@ -92,12 +93,16 @@ class Floor(pygame.sprite.Sprite):
 		if floornum == 0:
 			self.x = 50
 		elif floornum == 1:
-			self.x = 250
+			self.x = 300
 		elif floornum == 2:
-			self.x = 450
+			self.x = 550
 		elif floornum == 3:
-			self.x = 650
+			self.x = 800
+		self.width = 200
 		self.y = y
+		self.image = pygame.Surface((self.width,500))
+		self.image.fill((50,50,50))
+		self.rect = self.image.get_rect()
 		self.rect.topleft = (self.x, self.y)
 
 		
