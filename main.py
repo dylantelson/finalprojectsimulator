@@ -14,27 +14,27 @@ class ClassController():
 		pygame.display.set_caption("Parkour Simulator 2017")
 		clock = pygame.time.Clock()
 
-		screen_width = 640
-		screen_height = 480
+		self.screen_width = 640
+		self.screen_height = 480
 
 
-		screen = pygame.display.set_mode([screen_width, screen_height])
-		runnerboy = modules.MainCharacter((50, 249))
+		self.screen = pygame.display.set_mode([self.screen_width, self.screen_height])
+		self.runnerboy = modules.MainCharacter((50, 249))
 
-		randomfloory = 300
+		self.randomfloory = 300
 
-		floors = [modules.Floor((50, randomfloory))]
-		randomfloory += random.randint(-50, 50)
-		floors.append(modules.Floor((250, randomfloory)))
-		randomfloory += random.randint(-50, 50)
-		floors.append(modules.Floor((450, randomfloory)))
-		randomfloory += random.randint(-50, 50)
-		floors.append(modules.Floor((650, randomfloory)))
+		self.floors = [modules.Floor((50, self.randomfloory))]
+		self.randomfloory += random.randint(-50, 50)
+		self.floors.append(modules.Floor((250, self.randomfloory)))
+		self.randomfloory += random.randint(-50, 50)
+		self.floors.append(modules.Floor((450, self.randomfloory)))
+		self.randomfloory += random.randint(-50, 50)
+		self.floors.append(modules.Floor((650, self.randomfloory)))
 
-		powerups = []
-		powerupscooldown = 0
+		self.powerups = []
+		self.powerupscooldown = 0
 
-		score = 0
+		self.score = 0
 
 
 		loop = True
@@ -42,85 +42,97 @@ class ClassController():
 			for event in pygame.event.get():
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_UP:
-						runnerboy.jump()
+						self.runnerboy.jump()
 					elif event.key == pygame.K_DOWN:
-						runnerboy.maxyspeed = 7
-						runnerboy.gravitymultiplier = 5
+						self.runnerboy.maxyspeed = 7
+						self.runnerboy.gravitymultiplier = 5
 				if event.type == pygame.KEYUP:
 					if event.key == pygame.K_DOWN:
-						if powerupscooldown > 0:
-							runnerboy.gravitymultiplier = 0.5
+						if self.powerupscooldown > 0:
+							self.runnerboy.gravitymultiplier = 0.5
 						else:
-							runnerboy.gravitymultiplier = 1
-						runnerboy.maxyspeed = 6
+							self.runnerboy.gravitymultiplier = 1
+						self.runnerboy.maxyspeed = 6
 
 				if event.type == pygame.QUIT:
 					loop = False
 
-			for i in range(len(floors)):
-				if floors[i].x + 150 < 0:
-					randomfloory += random.randint(-50, 50)
-					if randomfloory >= 420:
-						randomfloory = 420
-					elif randomfloory <= 60:
-						randomfloory = 60
-					floors[i] = modules.Floor((700, randomfloory))
+			for i in range(len(self.floors)):
+				if self.floors[i].x + 150 < 0:
+					self.randomfloory += random.randint(-50, 50)
+					if self.randomfloory >= 420:
+						self.randomfloory = 420
+					elif self.randomfloory <= 60:
+						self.randomfloory = 60
+					self.floors[i] = modules.Floor((700, self.randomfloory))
 					if random.randint(0,2) == 1:
-						powerups.append(modules.Powerup((750, randomfloory - 43)))
+						self.powerups.append(modules.Powerup((750, self.randomfloory - 43)))
 
-			screen.fill((100,100,100))
+			self.screen.fill((100,100,100))
 
-			speed = runnerboy.speed
+			speed = self.runnerboy.speed
 
-			if powerupscooldown > 0:
-				powerupscooldown -= 1
-				if powerupscooldown <= 0:
-					runnerboy.gravitymultiplier = 1
+			if self.powerupscooldown > 0:
+				self.powerupscooldown -= 1
+				if self.powerupscooldown <= 0:
+					self.runnerboy.gravitymultiplier = 1
 
 
-			for i in range(len(floors)):
-				floors[i].always(speed)
-				screen.blit(floors[i].image, (floors[i].x, floors[i].y))
+			for i in range(len(self.floors)):
+				self.floors[i].always(speed)
+				self.screen.blit(self.floors[i].image, (self.floors[i].x, self.floors[i].y))
 
-			for i in range(len(powerups)):
-				powerups[i].always(speed)
-				screen.blit(powerups[i].image, (powerups[i].x, powerups[i].y))
-				if pygame.sprite.collide_rect(runnerboy, powerups[i]):
-					if powerups[i].type == "chair":
-						runnerboy.speed -= 1
-						del powerups[i]
-					elif powerups[i].type == "gravity":
-						runnerboy.gravitymultiplier = 0.5
-						del powerups[i]
-						powerupscooldown = 150
-					if len(powerups) > 0:
-						for i in range(i, len(powerups)):
-							powerups[i].always(speed)
-							screen.blit(powerups[i].image, (powerups[i].x, powerups[i].y))
+			for i in range(len(self.powerups)):
+				self.powerups[i].always(speed)
+				self.screen.blit(self.powerups[i].image, (self.powerups[i].x, self.powerups[i].y))
+				if pygame.sprite.collide_rect(self.runnerboy, self.powerups[i]):
+					if self.powerups[i].type == "chair":
+						self.runnerboy.speed -= 1
+						del self.powerups[i]
+					elif self.powerups[i].type == "gravity":
+						self.runnerboy.gravitymultiplier = 0.5
+						del self.powerups[i]
+						self.powerupscooldown = 150
+					if len(self.powerups) > 0:
+						for i in range(i, len(self.powerups)):
+							self.powerups[i].always(speed)
+							self.screen.blit(self.powerups[i].image, (self.powerups[i].x, self.powerups[i].y))
 					break
-				if powerups[i].x + 62 < 0:
-					del powerups[i]
-					if len(powerups) > 0:
-						for i in range(i, len(powerups)):
-							powerups[i].always(speed)
-							screen.blit(powerups[i].image, (powerups[i].x, powerups[i].y))
+				if self.powerups[i].x + 62 < 0:
+					del self.powerups[i]
+					if len(self.powerups) > 0:
+						for i in range(i, len(self.powerups)):
+							self.powerups[i].always(speed)
+							self.screen.blit(self.powerups[i].image, (self.powerups[i].x, self.powerups[i].y))
 					break
 
-			runnerboy.always(floors,powerups)
-			screen.blit(runnerboy.image, (runnerboy.x, runnerboy.y))
+			self.runnerboy.always(self.floors,self.powerups)
+			self.screen.blit(self.runnerboy.image, (self.runnerboy.x, self.runnerboy.y))
 
-			if runnerboy.y > 480:
-				loop = False
+			if self.runnerboy.y > 480:
+				self.reset()
 
-			score += 1
+			self.score += 1
 
-			scoretext = font.render((str(('Score: ' + str(score)))), True, (0,0,0))
-			screen.blit(scoretext, (10, 10))
+			self.scoretext = font.render((str(('Score: ' + str(self.score)))), True, (0,0,0))
+			self.screen.blit(self.scoretext, (10, 10))
 
-			if powerupscooldown > 0:
-				screen.blit(font.render(('Gravity: ' + str(powerupscooldown)), True, (0,0,0)), (10, 25))
+			if self.powerupscooldown > 0:
+				self.screen.blit(font.render(('Gravity: ' + str(self.powerupscooldown)), True, (0,0,0)), (10, 25))
 
 			pygame.display.update()
 			clock.tick(60)
+
+	def reset(self):
+		self.runnerboy.reset((50, 249))
+		self.randomfloory = 300
+		for i in range(len(self.floors)):
+			if i > 0:
+				self.randomfloory += random.randint(-50, 50)
+			self.floors[i].reset(i, self.randomfloory)
+		self.powerups = []
+		self.powerupscooldown = 0
+		self.score = 0
+
 
 main = ClassController()

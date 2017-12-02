@@ -60,6 +60,19 @@ class MainCharacter(pygame.sprite.Sprite):
 			self.yspeed = self.jumpforce
 			self.onGround = False
 			self.rect.topleft = (self.x, self.y)
+
+	def reset(self, pos):
+		self.gravity = 0.5
+		self.gravitymultiplier = 1
+		self.speed = 6
+		self.maxspeed = 12
+		self.yspeed = 1
+		self.maxyspeed = 4
+		self.x = pos[0]
+		self.y = pos[1]
+		self.dead = False
+		self.rect.topleft = (self.x, self.y)
+
 	
 class Floor(pygame.sprite.Sprite):
 	def __init__(self, pos):
@@ -74,6 +87,21 @@ class Floor(pygame.sprite.Sprite):
 	def always(self, speed):
 		self.x -= speed
 		self.rect.topleft = (self.x, self.y)
+
+	def reset(self, floornum, y):
+		if floornum == 0:
+			self.x = 50
+		elif floornum == 1:
+			self.x = 250
+		elif floornum == 2:
+			self.x = 450
+		elif floornum == 3:
+			self.x = 650
+		self.y = y
+		self.rect.topleft = (self.x, self.y)
+
+		
+
 
 class Powerup(pygame.sprite.Sprite):
 	def __init__(self, pos):
