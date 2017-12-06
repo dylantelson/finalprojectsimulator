@@ -20,4 +20,3 @@ class Powerup(pygame.sprite.Sprite):
 	def always(self, speed):
 		self.x -= speed
 		self.rect.topleft = (self.x, self.y)
-

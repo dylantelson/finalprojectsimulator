@@ -66,6 +66,10 @@ class MainCharacter(pygame.sprite.Sprite):
 			self.onGround = False
 			self.rect.topleft = (self.x, self.y)
 
+	def groundpound(self):
+		self.maxyspeed = 7
+		self.gravitymultiplier = 5
+
 	def reset(self, pos):
 		self.gravity = 0.9
 		self.gravitymultiplier = 1

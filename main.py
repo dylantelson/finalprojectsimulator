@@ -69,8 +69,7 @@ class ClassController():
 					elif event.key == pygame.K_UP:
 						self.runnerboy.jump()
 					elif event.key == pygame.K_DOWN:
-						self.runnerboy.maxyspeed = 7
-						self.runnerboy.gravitymultiplier = 5
+						self.runnerboy.groundpound()
 				if event.type == pygame.KEYUP:
 					if event.key == pygame.K_DOWN:
 						if self.powerupscooldown > 0:
